@@ -34,4 +34,4 @@ class ModuleWalk(object):
                      for fname in files
                      if self.is_valid(fname)}
                 )
-            return valid_modules
+        return valid_modules
