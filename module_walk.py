@@ -1,3 +1,4 @@
+import itertools
 import os
 
 
@@ -13,16 +14,24 @@ class ModuleWalk(object):
         self.directory_root = directory_root
 
     def is_valid(self, fname):
-        for rule in self.rules['walk']:
-            raise NotImplementedError
+        if all([
+            rule(fname) for rule in self.rules['walk']
+        ]):
+            return fname
 
     @property
     def module_registry(self):
-        valid_modules = []
-        for root, dirs, files in self.directory_root:
-            valid_modules.extend(
-                {fname[:-3]: os.path.join(root, fname)
-                 for fname in files
-                 if self.is_valid(fname, self.rules)}
+        valid_modules = {}
+        for root, dirs, files in os.walk(self.directory_root):
+            _dirs = list(
+                itertools.ifilter(lambda x: not x.startswith('.'), dirs)
             )
-        return valid_modules
+            if _dirs:
+                raise NotImplementedError
+            else:
+                valid_modules.update(
+                    {fname[:-3]: os.path.join(root, fname)
+                     for fname in files
+                     if self.is_valid(fname)}
+                )
+            return valid_modules

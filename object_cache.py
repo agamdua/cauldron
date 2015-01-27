@@ -1,7 +1,10 @@
 import os
 
-from .exceptions import NoValidationError
-from .module_walk import ModuleWalk
+from module_walk import ModuleWalk
+
+
+class NoValidationError:
+    pass
 
 
 class ObjectCache(object):
@@ -23,7 +26,8 @@ class ObjectCache(object):
         self.rules = rules
         self.disable_validation = disable_validation
 
-    def walk(self, directory_root=os.getcwd()):
+    @property
+    def modules(self, directory_root=os.getcwd()):
         """
         walking the modules, looking for what we need
 
@@ -31,7 +35,7 @@ class ObjectCache(object):
             directory_root -- defaults to current directory, used in os.walk()
         """
         if self.rules and not self.disable_validation:
-            module_registry = ModuleWalk(
+            return ModuleWalk(
                 rules=self.rules, directory_root=directory_root
             ).module_registry
         else:
@@ -39,3 +43,15 @@ class ObjectCache(object):
                 "Please define rules or explicitly use"
                 "the disable_validation flag"
             )
+
+object_cache = ObjectCache(
+    rules={
+        'walk': [
+            lambda x: x.endswith('.py'),
+            lambda x: not x.startswith('__'),
+            lambda x: not x.startswith('.'),
+        ]
+    }
+)
+
+print object_cache.modules
