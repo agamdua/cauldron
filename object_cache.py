@@ -31,7 +31,9 @@ class ObjectCache(object):
             directory_root -- defaults to current directory, used in os.walk()
         """
         if self.rules and not self.disable_validation:
-            ModuleWalk.walk()
+            module_registry = ModuleWalk(
+                rules=self.rules, directory_root=directory_root
+            ).module_registry
         else:
             raise NoValidationError(
                 "Please define rules or explicitly use"
