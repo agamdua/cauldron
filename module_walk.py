@@ -27,7 +27,8 @@ class ModuleWalk(object):
                 itertools.ifilter(lambda x: not x.startswith('.'), dirs)
             )
             if _dirs:
-                raise NotImplementedError
+                # need an ignore setting
+                continue
             else:
                 valid_modules.update(
                     {fname[:-3]: os.path.join(root, fname)
