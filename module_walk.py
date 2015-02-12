@@ -1,4 +1,3 @@
-import itertools
 import os
 
 
@@ -23,11 +22,8 @@ class ModuleWalk(object):
     def module_registry(self):
         valid_modules = {}
         for root, dirs, files in os.walk(self.directory_root):
-            _dirs = list(
-                itertools.ifilter(lambda x: not x.startswith('.'), dirs)
-            )
+            _dirs = filter(lambda x: not x.startswith('.'), dirs)
             if _dirs:
-                # need an ignore setting
                 continue
             else:
                 valid_modules.update(

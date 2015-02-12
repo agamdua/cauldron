@@ -54,4 +54,5 @@ object_cache = ObjectCache(
     }
 )
 
-print object_cache.modules
+from pprint import pprint
+pprint(object_cache.modules)
