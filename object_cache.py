@@ -11,7 +11,7 @@ class ObjectCache(object):
     """
     Store for all the objects that satisfy rules
     """
-    def __init__(self, rules=None, disable_validation=False):
+    def __init__(self, rules=None, disable_validation=False, inspection=True):
         """
         Instantiate the object cache with whatever validation rules
         are required
@@ -25,6 +25,7 @@ class ObjectCache(object):
         """
         self.rules = rules
         self.disable_validation = disable_validation
+        self.inspection = inspection
 
     @property
     def modules(self, directory_root=os.getcwd()):
@@ -36,7 +37,9 @@ class ObjectCache(object):
         """
         if self.rules and not self.disable_validation:
             return ModuleWalk(
-                rules=self.rules, directory_root=directory_root
+                rules=self.rules,
+                directory_root=directory_root,
+                inspection=self.inspection
             ).module_registry
         else:
             raise NoValidationError(
@@ -50,9 +53,13 @@ object_cache = ObjectCache(
             lambda x: x.endswith('.py'),
             lambda x: not x.startswith('__'),
             lambda x: not x.startswith('.'),
+        ],
+        'inspect': [
+            lambda x: x,
         ]
     }
 )
 
 from pprint import pprint
 pprint(object_cache.modules)
+print("Length = {}".format(len(object_cache.modules)))
