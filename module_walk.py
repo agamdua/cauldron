@@ -1,6 +1,8 @@
 import os
 import itertools
 
+from inspection import Inspect
+
 
 class ModuleWalk(object):
     """
@@ -14,18 +16,17 @@ class ModuleWalk(object):
         self.directory_root = directory_root
         self.inspection = inspection
 
-    def is_valid(self, fname):
+    def is_valid(self, root, fname):
+        """
+        This methods runs over the rules specified to the object cache and
+        validates the module according to them.
+        """
         # TODO: exit when first condition fails, no need to evaluate all and
         # do and all() on top of that.
         if all([rule(fname) for rule in self.rules['walk']]):
             if self.inspection:
-                # TODO: think about changing this to have separate flow for inspect
-                # which will leverage the relevant inspect class
-                return all([
-                    rule(fname) for rule in list(
-                        itertools.chain.from_iterable(self.rules.values())
-                    )
-                ])
+                module = Inspect.import_module(root, fname)
+                return all([rule(module) for rule in self.rules['inspect']])
             else:
                 return True
         return False
@@ -43,6 +44,6 @@ class ModuleWalk(object):
                 valid_modules.update(
                     {fname[:-3]: os.path.join(root, fname)
                      for fname in files
-                     if self.is_valid(fname)}
+                     if self.is_valid(root, fname)}
                 )
         return valid_modules
