@@ -53,6 +53,7 @@ object_cache = ObjectCache(
             lambda x: x.endswith('.py'),
             lambda x: not x.startswith('__'),
             lambda x: not x.startswith('.'),
+            lambda x: not x.startswith('00'),
         ],
         'inspect': [
             lambda x: x,
