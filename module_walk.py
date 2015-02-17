@@ -1,4 +1,3 @@
-import imp
 import os
 
 
@@ -21,18 +20,7 @@ class ModuleWalk(object):
         """
         # TODO: exit when first condition fails, no need to evaluate all and
         # do and all() on top of that.
-        if all([rule(fname) for rule in self.rules['walk']]):
-            if self.inspection:
-                try:
-                    module = imp.load_source(fname, root)
-                except IOError:
-                    # temporarily silencing
-                    print "{} import failed".format(fname)
-                    return False
-                return all([rule(module) for rule in self.rules['inspect']])
-            else:
-                return True
-        return False
+        return all([rule(fname) for rule in self.rules['walk']])
 
     @property
     def module_registry(self):
@@ -43,7 +31,7 @@ class ModuleWalk(object):
                 continue
             else:
                 valid_modules.update(
-                    {imp.load_source(fname, root): os.path.join(root, fname)
+                    {fname[:-3]: os.path.join(root, fname)
                      for fname in files
                      if self.is_valid(root, fname)}
                 )

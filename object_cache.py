@@ -1,4 +1,6 @@
+import inspect
 import os
+import imp
 
 from module_walk import ModuleWalk
 
@@ -47,6 +49,18 @@ class ObjectCache(object):
                 "the disable_validation flag"
             )
 
+    @property
+    def members(self):
+        _members = []
+        for module in self.modules.keys():
+            for obj in inspect.getmembers(
+                imp.load_source(module, self.modules[module])
+            ):
+                if all([rule(obj) for rule in self.rules['inspect']]):
+                    _members.append(obj[0])
+        return set(_members)
+
+
 object_cache = ObjectCache(
     rules={
         'walk': [
@@ -54,13 +68,15 @@ object_cache = ObjectCache(
             lambda x: not x.startswith('__'),
             lambda x: not x.startswith('.'),
             lambda x: not x.startswith('00'),
+            lambda x: not x.startswith('test'),
         ],
         'inspect': [
-            lambda x: x,
+            lambda x: not x[0].startswith('__'),
         ]
     }
 )
 
 from pprint import pprint
 pprint(object_cache.modules)
+pprint(object_cache.members)
 print("Length = {}".format(len(object_cache.modules)))
