@@ -2,6 +2,7 @@ import inspect
 import os
 import imp
 
+from cached_property import cached_property as cached
 from module_walk import ModuleWalk
 
 
@@ -29,7 +30,7 @@ class ObjectCache(object):
         self.disable_validation = disable_validation
         self.inspection = inspection
 
-    @property
+    @cached
     def modules(self, directory_root=os.getcwd()):
         """
         walking the modules, looking for what we need
@@ -49,7 +50,7 @@ class ObjectCache(object):
                 "the disable_validation flag"
             )
 
-    @property
+    @cached
     def members(self):
         _members = []
         for module in self.modules.keys():
@@ -57,8 +58,8 @@ class ObjectCache(object):
                 imp.load_source(module, self.modules[module])
             ):
                 if all([rule(obj) for rule in self.rules['inspect']]):
-                    _members.append(obj[0])
-        return set(_members)
+                    _members.append(obj[1])
+        return list(set(_members))
 
 
 object_cache = ObjectCache(
@@ -72,11 +73,20 @@ object_cache = ObjectCache(
         ],
         'inspect': [
             lambda x: not x[0].startswith('__'),
+            lambda x: inspect.isclass(x[1]),
         ]
     }
 )
 
-from pprint import pprint
-pprint(object_cache.modules)
-pprint(object_cache.members)
-print("Length = {}".format(len(object_cache.modules)))
+
+def debug(object_cache):
+    from pprint import pprint
+    pprint(object_cache.modules)
+    print("Number of files/modules = {}".format(len(object_cache.modules)))
+    pprint(object_cache.members)
+    print(
+        "Number of classes satisfying criteria = {}"
+        .format(len(object_cache.members))
+    )
+
+debug(object_cache)
