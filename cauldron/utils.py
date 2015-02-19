@@ -26,4 +26,4 @@ def silence(func, x, exceptions=None, fail=False):
     try:
         func(x)
     except:
-        return fail
+        return not fail
