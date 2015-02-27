@@ -3,6 +3,8 @@ import os
 import imp
 
 from cached_property import cached_property as cached
+
+from config import RULES
 from module_walk import ModuleWalk
 
 
@@ -62,21 +64,7 @@ class ObjectCache(object):
         return list(set(_members))
 
 
-object_cache = ObjectCache(
-    rules={
-        'walk': [
-            lambda x: x.endswith('.py'),
-            lambda x: not x.startswith('__'),
-            lambda x: not x.startswith('.'),
-            lambda x: not x.startswith('00'),
-            lambda x: not x.startswith('test'),
-        ],
-        'inspect': [
-            lambda x: not x[0].startswith('__'),
-            lambda x: inspect.isclass(x[1]),
-        ]
-    }
-)
+object_cache = ObjectCache(rules=RULES)
 
 
 def debug(object_cache):
