@@ -5,7 +5,7 @@ Utils that assume what you are doing
 """
 
 
-def silence(func, x, exceptions=None, fail=False, ret=False):
+def silence(func, x, exceptions=Exception, fail=False, ret=False):
     """
     This is a wrapper that silences exceptions in a callable.
 
@@ -26,8 +26,10 @@ def silence(func, x, exceptions=None, fail=False, ret=False):
     """
     try:
         if ret:
+            # TODO: Refactor and move out into its own function,
+            # really does not belong here.
             return func(x)
         else:
             return bool(func(x))
-    except:
+    except exceptions:
         return not fail
