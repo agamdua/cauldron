@@ -5,7 +5,7 @@ Cauldron - store all the things!
 .. image:: https://badge.fury.io/py/cauldron.png
     :target: http://badge.fury.io/py/cauldron
 
-.. image:: https://travis-ci.org/agamdua/cauldron.png?branch=master
+.. image:: https://travis-ci.org/agamdua/cauldron.png?branch=develop
         :target: https://travis-ci.org/agamdua/cauldron
 
 .. image:: https://pypip.in/d/cauldron/badge.png
