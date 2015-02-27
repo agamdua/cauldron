@@ -1,6 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+test_utils
+----------------------------------
+
+Tests for `utils` for the `cauldron` module.
+"""
+
 import unittest
 
-from .utils import silence
+from cauldron.utils import silence
 
 
 class TestUtils(unittest.TestCase):
@@ -21,3 +31,7 @@ class TestUtils(unittest.TestCase):
             25,
             silence(lambda x: x*x, 5, ret=True)
         )
+
+
+if __name__ == '__main__':
+    unittest.main()
