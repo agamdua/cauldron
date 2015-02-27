@@ -4,7 +4,8 @@ Utils that assume what you are doing
 (Here be dragons)
 """
 
-def silence(func, x, exceptions=None, fail=False):
+
+def silence(func, x, exceptions=None, fail=False, ret=False):
     """
     This is a wrapper that silences exceptions in a callable.
 
@@ -24,6 +25,9 @@ def silence(func, x, exceptions=None, fail=False):
             This is the default behavior.
     """
     try:
-        func(x)
+        if ret:
+            return func(x)
+        else:
+            return bool(func(x))
     except:
         return not fail
