@@ -20,4 +20,32 @@ Cauldron lets you store all the objects according to rules
 Features
 --------
 
-* TODO
+Cauldron allows you to store all your objects according to a
+set of rules.
+
+
+Usage
+-----
+
+The API is a WIP, but essentially run:
+
+.. highlight:: python
+	python object_cache.py
+
+Note that this requires one to clone the repository as opposed to
+install it.
+
+As one can see, this package has not been released yet.
+
+
+Configuration
+-------------
+
+Cauldron collects objects based on two types of rules:
+
+1. Rules for the module walk, i.e., rules to decide which file to
+look in
+2. Rules for inspection, i.e., rules according to which certain objects
+will be stored in the cache.
+
+These rules are supplied while instantiating an `ObjectCache` instance.
