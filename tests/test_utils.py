@@ -10,7 +10,7 @@ Tests for `utils` for the `cauldron` module.
 
 import unittest
 
-from cauldron.utils import silence
+from cauldron.cauldron.utils import silence
 
 
 class TestUtils(unittest.TestCase):
