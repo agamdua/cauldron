@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 import inspect
 import os
 import imp
 
 from cached_property import cached_property as cached
 
-from config import RULES
 from module_walk import ModuleWalk
 
 
@@ -56,25 +56,15 @@ class ObjectCache(object):
     def members(self):
         _members = []
         for module in self.modules.keys():
-            for obj in inspect.getmembers(
-                imp.load_source(module, self.modules[module])
-            ):
+            try:
+                objects = inspect.getmembers(
+                    imp.load_source(module, self.modules[module])
+                )
+            except Exception:
+                # TODO: log this
+                continue
+
+            for obj in objects:
                 if all([rule(obj) for rule in self.rules['inspect']]):
                     _members.append(obj[1])
         return list(set(_members))
-
-
-object_cache = ObjectCache(rules=RULES)
-
-
-def debug(object_cache):
-    from pprint import pprint
-    pprint(object_cache.modules)
-    print("Number of files/modules = {}".format(len(object_cache.modules)))
-    pprint(object_cache.members)
-    print(
-        "Number of classes satisfying criteria = {}"
-        .format(len(object_cache.members))
-    )
-
-debug(object_cache)

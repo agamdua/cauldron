@@ -26,13 +26,9 @@ class ModuleWalk(object):
     def module_registry(self):
         valid_modules = {}
         for root, dirs, files in os.walk(self.directory_root):
-            _dirs = filter(lambda x: not x.startswith('.'), dirs)
-            if _dirs:
-                continue
-            else:
-                valid_modules.update(
-                    {fname[:-3]: os.path.join(root, fname)
-                     for fname in files
-                     if self.is_valid(root, fname)}
-                )
+            valid_modules.update(
+                {fname[:-3]: os.path.join(root, fname)
+                 for fname in files
+                 if self.is_valid(root, fname)}
+            )
         return valid_modules
