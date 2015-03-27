@@ -4,17 +4,15 @@ from config import RULES
 from object_cache import ObjectCache
 
 
-object_cache = ObjectCache(rules=RULES)
+# oc = ObjectCache(rules=RULES)
 
 
-def debug(object_cache):
+def debug(obj_cache):
     from pprint import pprint
-    pprint(object_cache.modules)
-    print("Number of files/modules = {}".format(len(object_cache.modules)))
-    pprint(object_cache.members)
+    pprint(obj_cache.modules)
+    print("Number of files/modules = {}".format(len(obj_cache.modules)))
+    pprint(obj_cache.members)
     print(
         "Number of classes satisfying criteria = {}"
-        .format(len(object_cache.members))
+        .format(len(obj_cache.members))
     )
-
-debug(object_cache)

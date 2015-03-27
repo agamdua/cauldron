@@ -10,14 +10,14 @@ Tests for `utils` for the `cauldron` module.
 
 import unittest
 
-from cauldron.cauldron.utils import silence
+from cauldron.utils import silence
 
 
 class TestUtils(unittest.TestCase):
     def test_silence_silencing(self):
         self.assertEqual(
             True,
-            silence(lambda x: x.startswith('foo'), range(5))
+            silence(lambda x: x.startswith('foo'), list(xrange(5)))
         )
 
     def test_silence_bool(self):
