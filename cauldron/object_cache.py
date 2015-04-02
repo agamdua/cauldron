@@ -16,7 +16,11 @@ class ObjectCache(object):
     """
     Store for all the objects that satisfy rules
     """
-    def __init__(self, rules=None, disable_validation=False, inspection=True):
+    def __init__(self,
+                 rules=None,
+                 disable_validation=False,
+                 inspection=True,
+                 root=os.getcwd()):
         """
         Instantiate the object cache with whatever validation rules
         are required
@@ -31,9 +35,10 @@ class ObjectCache(object):
         self.rules = rules
         self.disable_validation = disable_validation
         self.inspection = inspection
+        self.root = root
 
     @cached
-    def modules(self, directory_root=os.getcwd()):
+    def modules(self):
         """
         walking the modules, looking for what we need
 
@@ -43,7 +48,7 @@ class ObjectCache(object):
         if self.rules and not self.disable_validation:
             return ModuleWalk(
                 rules=self.rules,
-                directory_root=directory_root,
+                directory_root=self.root,
                 inspection=self.inspection
             ).module_registry
         else:
@@ -55,16 +60,24 @@ class ObjectCache(object):
     @cached
     def members(self):
         _members = []
-        for module in self.modules.keys():
+        for module, path in self.modules.items():
             try:
                 objects = inspect.getmembers(
-                    imp.load_source(module, self.modules[module])
+                    imp.load_source(module, path)
                 )
             except Exception:
                 # TODO: log this
                 continue
-
             for obj in objects:
-                if all([rule(obj) for rule in self.rules['inspect']]):
+                if self.is_valid(obj):
                     _members.append(obj[1])
         return list(set(_members))
+
+    def is_valid(self, obj):
+        """
+        TODO
+        """
+        for rule in self.rules['inspect']:
+            if not rule(obj):
+                return False
+        return True
