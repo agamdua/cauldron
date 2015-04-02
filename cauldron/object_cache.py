@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import inspect
+import importlib
 import os
-import imp
 
 from cached_property import cached_property as cached
 
@@ -60,11 +59,9 @@ class ObjectCache(object):
     @cached
     def members(self):
         _members = []
-        for module, path in self.modules.items():
+        for module in self.modules.keys():
             try:
-                objects = inspect.getmembers(
-                    imp.load_source(module, path)
-                )
+                objects = vars(importlib.import_module(module)).items()
             except Exception:
                 # TODO: log this
                 continue
