@@ -10,8 +10,6 @@ Tests for `cauldron` module.
 
 import unittest
 
-from cauldron import cauldron
-
 
 class TestCauldron(unittest.TestCase):
 

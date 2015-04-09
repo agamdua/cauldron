@@ -1,10 +1,23 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import print_function
+
 import importlib
 import os
+import six
 
-from cached_property import cached_property as cached
+try:
+    from uncached_property import cached_property as cached
+except ImportError:
+    def cached(func):  # noqa
+        @six.wraps(func)
+        def wrapper(*args, **kwargs):
+            print("Cauldron could not locate the cached-property package"
+                  "Please pip install the package to get the best wizardy")
+            return func(*args, **kwargs)
+        return wrapper
 
-from module_walk import ModuleWalk
+from .module_walk import ModuleWalk
 
 
 class NoValidationError:
