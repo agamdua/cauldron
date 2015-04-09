@@ -7,7 +7,7 @@ import os
 import six
 
 try:
-    from uncached_property import cached_property as cached
+    from cached_property import cached_property as cached
 except ImportError:
     def cached(func):  # noqa
         @six.wraps(func)
