@@ -12,9 +12,6 @@ def cached(func):  # noqa
     """
     @six.wraps(func)
     def wrapper(*args, **kwargs):
-        # TODO: add argument for message so not hardcoded for one
-        print("Cauldron could not locate the cached-property package"
-              "Please pip install the package to get the best wizardy")
         return func(*args, **kwargs)
     return wrapper
 
