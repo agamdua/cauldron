@@ -4,18 +4,11 @@ from __future__ import print_function
 
 import importlib
 import os
-import six
 
 try:
     from cached_property import cached_property as cached
 except ImportError:
-    def cached(func):  # noqa
-        @six.wraps(func)
-        def wrapper(*args, **kwargs):
-            print("Cauldron could not locate the cached-property package"
-                  "Please pip install the package to get the best wizardy")
-            return func(*args, **kwargs)
-        return wrapper
+    from .utils import cached
 
 from .module_walk import ModuleWalk
 
