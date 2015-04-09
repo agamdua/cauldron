@@ -35,7 +35,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 cauldron tests
+	flake8 --exclude=.ropeproject cauldron tests
 
 test:
 	python setup.py test

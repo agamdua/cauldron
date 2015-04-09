@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import print_function
+
 import importlib
 import os
 
-from cached_property import cached_property as cached
+try:
+    from cached_property import cached_property as cached
+except ImportError:
+    from .utils import cached
 
-from module_walk import ModuleWalk
+from .module_walk import ModuleWalk
 
 
 class NoValidationError:
