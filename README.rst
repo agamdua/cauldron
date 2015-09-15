@@ -8,8 +8,8 @@ Cauldron - store all the things!
 .. image:: https://travis-ci.org/agamdua/cauldron.png?branch=develop
         :target: https://travis-ci.org/agamdua/cauldron
 
-.. image:: https://pypip.in/d/cauldron/badge.png
-        :target: https://pypi.python.org/pypi/cauldron
+.. image:: https://pypip.in/d/pycauldron/badge.png
+        :target: https://pypi.python.org/pypi/pycauldron
 
 
 Cauldron lets you store all the objects according to rules
