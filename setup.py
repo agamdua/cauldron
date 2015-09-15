@@ -23,7 +23,7 @@ test_requirements = [
 ]
 
 setup(
-    name='cauldron',
+    name='pycauldron',
     version='0.1.0',
     description="Cauldron lets you store all the objects according to rules",
     long_description=readme + '\n\n' + history,
